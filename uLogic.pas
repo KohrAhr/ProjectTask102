@@ -41,7 +41,7 @@ procedure TLogic.DisplayResult;
 var
 	LItem: String;
 begin
-	Writeln(Format('Total found: %s', [FLogicResult.Count]));
+	Writeln(Format('Total found: %d', [FLogicResult.Count]));
 	for LItem in FLogicResult do
 		Writeln(LItem);
 end;
@@ -77,7 +77,6 @@ begin
 					if LResult = FRequiredResult then
 						begin
 							FLogicResult.Add(LExpression);
-							Writeln(LExpression, '=', LResult);
 							Result := 1;
 						end
 				end
@@ -88,7 +87,9 @@ begin
 			for LCycle := 1 to FOperations.Length + 1 do
 				begin
 					if LCycle <= FOperations.Length then
-						LOption := FOperations[LCycle];
+						LOption := FOperations[LCycle]
+					else
+						LOption := '';
 					LRequest := LRequest + CheckAll(APrefix + IntToStr(ADepth) + LOption,
 						ADepth + 1);
 				end;

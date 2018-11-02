@@ -54,6 +54,8 @@ var
 begin
 	ReportMemoryLeaksOnShutdown := True;
 
+	Writeln('Start time: ', DateTimeToStr(Now));
+
 	{ Just quick self test for evaluation function }
 	Assert(ExpressionHelper.Evaluate('9/3') = '3');
 	Assert(ExpressionHelper.Evaluate('3+7') = '10');
@@ -69,6 +71,7 @@ begin
 		LLogic.Free;
 	end;
 
+	Writeln('End time: ', DateTimeToStr(Now));
 	Write('Press Enter for close application...');
 	Readln;
 end.
