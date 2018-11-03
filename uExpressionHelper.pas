@@ -11,9 +11,15 @@ type
 		class var FScope: IScope;
 	public
 		/// <summary>
-    ///  	Evaluate simple math operation
+		///  	Evaluate simple math operation
 		/// </summary>
 		class function Evaluate(AValue: String): String;
+
+		/// <summary>
+		///  	Check that expression is save to evaluate (no div to zero option)
+		/// </summary>
+		class function ExpressionIsSafe(AValue: String): Boolean;
+
 		class constructor Create;
 	end;
 
@@ -23,11 +29,17 @@ uses
 	System.Rtti,
 	System.Bindings.Consts,
 	System.Bindings.Evaluator,
-	System.Bindings.EvalSys;
+	System.Bindings.EvalSys,
+	System.SysUtils;
 
 class constructor ExpressionHelper.Create;
 begin
 	FScope := TNestedScope.Create(BasicOperators, BasicConstants);
+end;
+
+class function ExpressionHelper.ExpressionIsSafe(AValue: String): Boolean;
+begin
+	Result := not AValue.Contains('/0');
 end;
 
 class function ExpressionHelper.Evaluate(AValue: String): String;

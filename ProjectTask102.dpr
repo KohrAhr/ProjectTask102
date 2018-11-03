@@ -42,6 +42,8 @@ uses
   System.SysUtils,
   uExpressionHelper in 'uExpressionHelper.pas',
   uLogic in 'uLogic.pas',
+  uEnumLogic in 'uEnumLogic.pas',
+  uLogicBase in 'uLogicBase.pas',
   uBruteForceLogic in 'uBruteForceLogic.pas';
 
 const
@@ -58,6 +60,7 @@ const
 
 var
 	LLogic: TLogic;
+	LEnumLogic: TEnumLogic;
 	LBruteForceLogic: TBruteForceLogic;
 
 begin
@@ -68,6 +71,8 @@ begin
 	Assert(ExpressionHelper.Evaluate('3+7') = '10');
 	Assert(ExpressionHelper.Evaluate('-2-9') = '-11');
 	Assert(ExpressionHelper.Evaluate('-2+3*4/6') = '0');
+
+	// Way 1
 
 	Writeln('Logic start time: ', DateTimeToStr(Now));
 	LLogic := TLogic.Create;
@@ -80,7 +85,22 @@ begin
 	end;
 	Writeln('Logic end time: ', DateTimeToStr(Now));
 
-	Writeln('BruteForce start time: ', DateTimeToStr(Now));
+	// Way 2
+
+	Writeln('EnumLogic start time: ', DateTimeToStr(Now));
+	LEnumLogic := TEnumLogic.Create;
+	try
+		LEnumLogic.Iterate(CONST_INCOMMING_DATA, CONST_ALLOWED_OPERATIONS,
+			IntToStr(CONST_EXPECTING_DATA));
+		LEnumLogic.DisplayResult;
+	finally
+		LEnumLogic.Free;
+	end;
+	Writeln('EnumLogic end time: ', DateTimeToStr(Now));
+
+	// Not good way 3
+
+	Writeln('BruteForceLogic start time: ', DateTimeToStr(Now));
 	LBruteForceLogic := TBruteForceLogic.Create;
 	try
 		LBruteForceLogic.Iterate(CONST_INCOMMING_DATA, CONST_ALLOWED_OPERATIONS,
@@ -89,7 +109,9 @@ begin
 	finally
 		LBruteForceLogic.Free;
 	end;
-	Writeln('BruteForce end time: ', DateTimeToStr(Now));
+	Writeln('BruteForceLogic end time: ', DateTimeToStr(Now));
+
+	//
 
 	Write('Press Enter for close application...');
 	Readln;
