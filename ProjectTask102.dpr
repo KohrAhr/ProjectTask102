@@ -30,8 +30,8 @@ program ProjectTask102;
 
 	подобные задачи либо решаются с помощью "линейного программирования" (не имеет
 	ничего общего с обычным программированием) и теми, кто "видит числа" :)
-	и может	предоставить формулы, которые помогут находят все варианты решения
-	очень быстро,
+	и может	вывести/предоставить формулу(ы), которые помогут найти все варианты
+	решения очень быстро,
 	либо...
 	либо с помощью перебора всех возможных вариантов (программа brute-force) :/
 }
@@ -44,9 +44,16 @@ uses
 	uLogic in 'uLogic.pas';
 
 const
+	/// <summary>
+	///  	For "smart" algorithm we need to know only length.
+	///  	For "brute force" algorithm we need to pass entire string.
+	/// </summary>
 	CONST_INCOMMING_DATA = '1234567890';
 	CONST_EXPECTING_DATA = 97;
-	CONST_ALLOWED_OPERATIONS = '+-*/';
+	/// <summary>
+	///  	We really pass them and then split by char
+	/// </summary>
+	CONST_ALLOWED_OPERATIONS = '+-*/ ';
 
 var
 	LLogic: TLogic;

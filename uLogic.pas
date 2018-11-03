@@ -6,7 +6,6 @@ uses
 	System.Generics.Collections;
 
 type
-	// TODO: не использовать TList, заменить позже на Interface IList
 	TLogicResult = TList<String>;
 
 	TLogic = class
@@ -16,7 +15,7 @@ type
 		FOperations: String;
 		FPatternLength: Integer;
 
-		function CheckAll(APrefix: String; ADepth: Integer): Integer;
+		function CheckAll(APrefix: String = ''; ADepth: Integer = 1): Integer;
 	public
 
 		procedure DisplayResult;
@@ -33,7 +32,8 @@ type
 implementation
 
 uses
-	System.SysUtils, uExpressionHelper;
+	System.SysUtils,
+	uExpressionHelper;
 
 { Logic }
 
@@ -41,23 +41,22 @@ procedure TLogic.DisplayResult;
 var
 	LItem: String;
 begin
-	Writeln(Format('Total found: %d', [FLogicResult.Count]));
 	for LItem in FLogicResult do
 		Writeln(LItem);
+	Writeln(Format('Total found: %d', [FLogicResult.Count]));
 end;
 
 procedure TLogic.Iterate(APatternLength: Integer; AOperations: String;
 	ARequiredResult: String);
 begin
-	FLogicResult := TLogicResult.Create;
 	FPatternLength := APatternLength;
 	FOperations := AOperations;
 	FRequiredResult := ARequiredResult;
 
-	CheckAll('', 1);
+	CheckAll;
 end;
 
-function TLogic.CheckAll(APrefix: String; ADepth: Integer): Integer;
+function TLogic.CheckAll(APrefix: String = ''; ADepth: Integer = 1): Integer;
 var
 	LExpression: String;
 	LOption: String;
@@ -84,15 +83,10 @@ begin
 	else
 		begin
 			LRequest := 0;
-			for LCycle := 1 to FOperations.Length + 1 do
-				begin
-					if LCycle <= FOperations.Length then
-						LOption := FOperations[LCycle]
-					else
-						LOption := '';
-					LRequest := LRequest + CheckAll(APrefix + IntToStr(ADepth) + LOption,
-						ADepth + 1);
-				end;
+			for LCycle := 1 to FOperations.Length do
+				LRequest := LRequest + CheckAll(
+					APrefix + IntToStr(ADepth) + Trim(FOperations[LCycle]), ADepth + 1
+				);
 			Result := LRequest;
 		end;
 end;
